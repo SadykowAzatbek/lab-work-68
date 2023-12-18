@@ -31,7 +31,6 @@ export const todoSplice = createSlice({
 export const todoListReducer = todoSplice.reducer;
 export const {titlePost} = todoSplice.actions;
 
-
 export const todoListSlice = createSlice({
   name: 'todo',
   initialState: listGet,
@@ -42,8 +41,14 @@ export const todoListSlice = createSlice({
     clear: (state) => {
       state.todoList = [];
     },
+    removeTodo: (state, action) => {
+      state.todoList = state.todoList.filter(todo => todo.id !== action.payload);
+    },
+    toggleStatus: (state, action: PayloadAction<number>) => {
+      state.todoList[action.payload].status = !state.todoList[action.payload].status;
+    },
   }
 });
 
 export const ListReducer = todoListSlice.reducer;
-export const {add, clear} = todoListSlice.actions;
+export const {add, clear,removeTodo, toggleStatus} = todoListSlice.actions;

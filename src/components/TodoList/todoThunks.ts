@@ -12,13 +12,18 @@ export const postTodoList = createAsyncThunk<void, void, {state: RootState}>(
 
 export const fetchTodoList = createAsyncThunk(
   'todo/fetch',
-  async (_, { dispatch }) => {
+  async (_, {dispatch }) => {
     const responseData = await axiosApi.get<todoList>('todo.json');
     const obj = Object.keys(responseData.data);
 
-    const promise = obj.map(async (elem) => {
-      const response = await axiosApi.get<todoState>('todo/' + elem + '.json');
-      return response.data ?? 'not found';
+    const promise = obj.map(async (key) => {
+      const response = await axiosApi.get<todoState>('todo/' + key + '.json');
+
+      return {
+        ...response.data,
+        id: key,
+      };
+
     });
 
     dispatch(clear());
@@ -27,5 +32,12 @@ export const fetchTodoList = createAsyncThunk(
     data.forEach((item) => {
       dispatch(add(item));
     });
-  }
+  },
+);
+
+export const deleteTodo = createAsyncThunk(
+  'todo/delete',
+  async (id: string) => {
+    await axiosApi.delete('todo/' + id + '.json');
+  },
 );
