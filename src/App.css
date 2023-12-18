@@ -4,3 +4,13 @@
   padding: 2rem;
   text-align: center;
 }
+
+.btnPos {
+  right: 2px;
+  top: 6px
+}
+
+.check {
+  right: 81px;
+  top: 18px;
+}
