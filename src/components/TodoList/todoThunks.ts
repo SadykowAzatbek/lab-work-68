@@ -42,10 +42,10 @@ export const deleteTodo = createAsyncThunk(
   },
 );
 
-export const checkTodo = createAsyncThunk<void, string, {state: RootState}>(
+export const checkTodo = createAsyncThunk<void, todoState>(
   'todo/put',
-  async (arg, thunkAPI) => {
-    const info = thunkAPI.getState().todo;
-    await axiosApi.put('todo/' + arg + '.json', info.status);
-  }
-)
+  async (arg) => {
+    const {id, status, title} = arg;
+    await axiosApi.put('todo/' + id + '.json', {title, status});
+  },
+);

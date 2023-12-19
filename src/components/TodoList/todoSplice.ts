@@ -1,11 +1,13 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export interface todoState {
+  id: string;
   title: string;
   status: boolean;
 }
 
 const initialState: todoState = {
+  id: '',
   title: '',
   status: false,
 };
@@ -25,15 +27,11 @@ export const todoSplice = createSlice({
     titlePost: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
-    toggleState: (state, action: PayloadAction<boolean>) => {
-      state.status = action.payload;
-      console.log(action.payload);
-    },
   }
 });
 
 export const todoListReducer = todoSplice.reducer;
-export const {titlePost, toggleState} = todoSplice.actions;
+export const {titlePost} = todoSplice.actions;
 
 export const todoListSlice = createSlice({
   name: 'todo',
@@ -45,11 +43,22 @@ export const todoListSlice = createSlice({
     clear: (state) => {
       state.todoList = [];
     },
-    removeTodo: (state, action) => {
+    removeTodo: (state, action: PayloadAction<string>) => {
       state.todoList = state.todoList.filter(todo => todo.id !== action.payload);
+    },
+    toggleState: (state, action: PayloadAction<todoState>) => {
+      const {status} = action.payload;
+      state.todoList.forEach(todo => {
+        todo.status = status;
+      });
     },
   }
 });
 
 export const ListReducer = todoListSlice.reducer;
-export const {add, clear,removeTodo} = todoListSlice.actions;
+export const {
+  add,
+  clear,
+  removeTodo,
+  toggleState,
+} = todoListSlice.actions;

@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {AddDispatch, RootState} from './store';
 import TodoForm from './components/TodoForm/TodoForm';
@@ -14,9 +14,11 @@ function App() {
     dispatch(fetchTodoList());
   }, [dispatch]);
 
-  const handleCheckboxChange = (id: string, check: boolean) => {
-    dispatch(toggleState(check));
-    dispatch(checkTodo(id));
+  const handleCheckboxChange = async (event: React.ChangeEvent<HTMLInputElement>, title: string, id: string) => {
+    const newStatus = event.target.checked;
+    await dispatch(checkTodo({id: id, title: title, status: newStatus}));
+
+    dispatch(toggleState(newStatus));
   };
 
   const handleDelete = (id: string) => {
@@ -35,7 +37,7 @@ function App() {
               type="checkbox"
               className="position-absolute check"
               checked={elem.status}
-              onChange={() => handleCheckboxChange(elem.id, elem.status)}
+              onChange={(event) => handleCheckboxChange(event, elem.title, elem.id)}
             />
             <button
               className="btn btn-light btnPos position-absolute"
