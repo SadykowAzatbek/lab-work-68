@@ -25,11 +25,15 @@ export const todoSplice = createSlice({
     titlePost: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
+    toggleState: (state, action: PayloadAction<boolean>) => {
+      state.status = action.payload;
+      console.log(action.payload);
+    },
   }
 });
 
 export const todoListReducer = todoSplice.reducer;
-export const {titlePost} = todoSplice.actions;
+export const {titlePost, toggleState} = todoSplice.actions;
 
 export const todoListSlice = createSlice({
   name: 'todo',
@@ -44,11 +48,8 @@ export const todoListSlice = createSlice({
     removeTodo: (state, action) => {
       state.todoList = state.todoList.filter(todo => todo.id !== action.payload);
     },
-    toggleStatus: (state, action: PayloadAction<number>) => {
-      state.todoList[action.payload].status = !state.todoList[action.payload].status;
-    },
   }
 });
 
 export const ListReducer = todoListSlice.reducer;
-export const {add, clear,removeTodo, toggleStatus} = todoListSlice.actions;
+export const {add, clear,removeTodo} = todoListSlice.actions;
